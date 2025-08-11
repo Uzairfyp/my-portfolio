@@ -58,7 +58,7 @@ export default function Hero() {
       <div className="md:w-1/2 relative h-96 md:h-auto overflow-hidden rounded-tl-[5rem] rounded-bl-[5rem] shadow-xl animate-floatSlow">
         <div
           className="absolute inset-0 transform skew-x-[-10deg] scale-110 origin-top-right bg-cover bg-center filter brightness-90 transition-transform duration-700 hover:scale-115 hover:skew-x-[-8deg]"
-          style={{ backgroundImage: "url('/hero.jpg')" }}
+          style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/hero.jpg)` }}
           aria-hidden="true"
         />
         <div className="absolute inset-0 bg-gradient-to-tr from-[#2E026D]/70 via-[#3B0A45]/60 to-[#0E4D92]/60 mix-blend-multiply pointer-events-none rounded-tl-[5rem] rounded-bl-[5rem]" />
