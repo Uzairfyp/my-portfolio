@@ -37,16 +37,16 @@ export default function Contact() {
       body.append("email", trimmedData.email);
       body.append("message", trimmedData.message);
 
+      // 🔹 Updated Google Apps Script Web App URL
       await fetch(
-        "https://script.google.com/macros/s/AKfycbxDLic-xvTKcPX-G_SnxFROsynkDbs__4fa6H7bBsBEi4aIKCwMWHtDFLkh7yRRywYH/exec",
+        "https://script.google.com/macros/s/AKfycbwvuseMnYs9qK2n4vVFgaWvtjbcPOGLa9NDwKmQ3tA92jNxRJ4I-CGznOutI1ja1fs_/exec",
         {
           method: "POST",
-          mode: "no-cors", // ✅ needed for GitHub Pages
+          mode: "no-cors",
           body,
         }
       );
 
-      // ✅ Assume success (Apps Script doesn’t return JSON in no-cors)
       setStatus("✅ Message sent successfully!");
       setFormData({ name: "", email: "", message: "" });
     } catch (error) {
@@ -64,98 +64,97 @@ export default function Contact() {
   }, [status]);
 
   return (
-    <section className="min-h-screen bg-gray-900 text-white flex items-center justify-center px-6 py-16">
-      <div className="max-w-3xl w-full bg-gradient-to-tr from-[#2E026D] via-[#0E4D92] to-[#007FFF] rounded-3xl p-10 shadow-xl">
-        <h1 className="text-5xl font-extrabold mb-6 text-white drop-shadow-lg">
-          Get in Touch
-        </h1>
-        <p className="mb-10 text-cyan-300 max-w-xl">
-          Have a project in mind or just want to say hi? Fill out the form below
-          or email me directly at{" "}
-          <a
-            href="mailto:uzairrehman143@gmail.com"
-            className="underline text-cyan-400 hover:text-cyan-200"
-          >
-            uzairrehman143@gmail.com
-          </a>
-          .
-        </p>
+    <section className="min-h-screen bg-gray-950 text-white flex items-center justify-center px-4 py-12 relative overflow-hidden">
+      <div className="absolute -top-20 -left-20 w-64 h-64 bg-purple-600/20 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 right-0 w-80 h-80 bg-cyan-500/15 rounded-full blur-3xl"></div>
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(#1e1e2f_1px,transparent_1px)] [background-size:24px_24px] opacity-20"></div>
 
-        <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-          <div>
-            <label htmlFor="name" className="block mb-2 font-semibold">
-              Name
-            </label>
-            <input
-              id="name"
-              name="name"
-              type="text"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Your name"
-              className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition"
-              required
-              disabled={isSubmitting}
-            />
+      <div className="max-w-2xl w-full relative">
+        <div className="bg-gradient-to-br from-gray-900/70 via-[#13131f]/80 to-gray-900/90 backdrop-blur-md rounded-2xl border border-gray-800/50 shadow-2xl p-8 md:p-10">
+          <div className="absolute -top-4 -left-4 w-16 h-16 border-t-2 border-l-2 border-cyan-400/50 rounded-tl-2xl"></div>
+          <div className="absolute -bottom-4 -right-4 w-16 h-16 border-b-2 border-r-2 border-purple-500/50 rounded-br-2xl"></div>
+
+          <div className="text-center mb-10">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+              Get in Touch
+            </h1>
+            <p className="text-gray-400 max-w-md mx-auto">
+              Have a project in mind or just want to say hi? I'd love to hear from you.
+            </p>
           </div>
 
-          <div>
-            <label htmlFor="email" className="block mb-2 font-semibold">
-              Email
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="you@example.com"
-              className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition"
-              required
-              disabled={isSubmitting}
-            />
+          <div className="mb-8 text-center">
+            <a
+              href="mailto:uzairrehman143@gmail.com"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gray-800/50 border border-gray-700/50 text-cyan-400 hover:bg-gray-800/70 transition-colors"
+            >
+              Email Me
+            </a>
           </div>
 
-          <div>
-            <label htmlFor="message" className="block mb-2 font-semibold">
-              Message
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              rows="5"
-              value={formData.message}
-              onChange={handleChange}
-              placeholder="Write your message here..."
-              className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition resize-none"
-              required
-              disabled={isSubmitting}
-            ></textarea>
-          </div>
+          <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+            <div className="relative">
+              <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-400">Name</label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Your name"
+                className="w-full px-4 py-3 rounded-lg bg-gray-800/40 border border-gray-700/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all placeholder-gray-500"
+                required
+                disabled={isSubmitting}
+              />
+            </div>
 
-          {status && (
-            <p
-              aria-live="polite"
-              className={`text-center font-semibold ${
-                status.includes("✅") ? "text-green-400" : "text-red-400"
+            <div className="relative">
+              <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-400">Email</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="you@example.com"
+                className="w-full px-4 py-3 rounded-lg bg-gray-800/40 border border-gray-700/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all placeholder-gray-500"
+                required
+                disabled={isSubmitting}
+              />
+            </div>
+
+            <div className="relative">
+              <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-400">Message</label>
+              <textarea
+                id="message"
+                name="message"
+                rows="5"
+                value={formData.message}
+                onChange={handleChange}
+                placeholder="Write your message here..."
+                className="w-full px-4 py-3 rounded-lg bg-gray-800/40 border border-gray-700/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all placeholder-gray-500 resize-none"
+                required
+                disabled={isSubmitting}
+              />
+            </div>
+
+            {status && (
+              <div className={`rounded-lg p-3 text-center ${status.includes("✅") ? "bg-green-900/30 text-green-400" : "bg-red-900/30 text-red-400"}`}>
+                {status}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className={`w-full py-4 rounded-lg font-bold text-white transition-all ${
+                isSubmitting ? "bg-gray-700 cursor-not-allowed" : "bg-gradient-to-r from-purple-700 to-cyan-600 hover:from-purple-600 hover:to-cyan-500"
               }`}
             >
-              {status}
-            </p>
-          )}
-
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className={`w-full py-4 rounded-lg bg-gradient-to-r from-[#0E4D92] to-[#00CED1] font-bold text-white transition-transform transform shadow-lg ${
-              isSubmitting
-                ? "opacity-50 cursor-not-allowed"
-                : "hover:from-[#007FFF] hover:to-[#00BFFF] hover:scale-105"
-            }`}
-          >
-            {isSubmitting ? "Sending..." : "Send Message"}
-          </button>
-        </form>
+              {isSubmitting ? "Sending..." : "Send Message"}
+            </button>
+          </form>
+        </div>
       </div>
     </section>
   );
