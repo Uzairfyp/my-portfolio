@@ -7,7 +7,7 @@ export default function Contact() {
     message: "",
   });
 
-  const [status, setStatus] = useState(null); // success or error
+  const [status, setStatus] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
@@ -32,28 +32,23 @@ export default function Contact() {
     setStatus(null);
 
     try {
-      // ✅ Send as FormData (not JSON) so Apps Script can read e.parameter
       const body = new FormData();
       body.append("name", trimmedData.name);
       body.append("email", trimmedData.email);
       body.append("message", trimmedData.message);
 
-      const response = await fetch(
+      await fetch(
         "https://script.google.com/macros/s/AKfycbxDLic-xvTKcPX-G_SnxFROsynkDbs__4fa6H7bBsBEi4aIKCwMWHtDFLkh7yRRywYH/exec",
         {
           method: "POST",
-          body, // no headers needed for FormData
+          mode: "no-cors", // ✅ needed for GitHub Pages
+          body,
         }
       );
 
-      const result = await response.json();
-
-      if (result.ok) {
-        setStatus("✅ Message sent successfully!");
-        setFormData({ name: "", email: "", message: "" });
-      } else {
-        setStatus("❌ Failed to send: " + result.error);
-      }
+      // ✅ Assume success (Apps Script doesn’t return JSON in no-cors)
+      setStatus("✅ Message sent successfully!");
+      setFormData({ name: "", email: "", message: "" });
     } catch (error) {
       setStatus("❌ Network error: " + error.message);
     } finally {
@@ -61,7 +56,6 @@ export default function Contact() {
     }
   };
 
-  // Clear status message after 5 seconds
   useEffect(() => {
     if (status) {
       const timer = setTimeout(() => setStatus(null), 5000);
