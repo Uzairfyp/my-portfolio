@@ -14,10 +14,9 @@ export default function Contact() {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Trim inputs to avoid accidental spaces
     const trimmedData = {
       name: formData.name.trim(),
       email: formData.email.trim(),
@@ -25,19 +24,41 @@ export default function Contact() {
     };
 
     if (!trimmedData.name || !trimmedData.email || !trimmedData.message) {
-      setStatus("Please fill all fields.");
+      setStatus("❌ Please fill all fields.");
       return;
     }
 
     setIsSubmitting(true);
     setStatus(null);
 
-    // Simulate async sending action (replace with your API/email service)
-    setTimeout(() => {
-      setStatus("Message sent successfully!");
-      setFormData({ name: "", email: "", message: "" });
+    try {
+      // ✅ Send as FormData (not JSON) so Apps Script can read e.parameter
+      const body = new FormData();
+      body.append("name", trimmedData.name);
+      body.append("email", trimmedData.email);
+      body.append("message", trimmedData.message);
+
+      const response = await fetch(
+        "https://script.google.com/macros/s/AKfycbxDLic-xvTKcPX-G_SnxFROsynkDbs__4fa6H7bBsBEi4aIKCwMWHtDFLkh7yRRywYH/exec",
+        {
+          method: "POST",
+          body, // no headers needed for FormData
+        }
+      );
+
+      const result = await response.json();
+
+      if (result.ok) {
+        setStatus("✅ Message sent successfully!");
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        setStatus("❌ Failed to send: " + result.error);
+      }
+    } catch (error) {
+      setStatus("❌ Network error: " + error.message);
+    } finally {
       setIsSubmitting(false);
-    }, 1500);
+    }
   };
 
   // Clear status message after 5 seconds
@@ -55,7 +76,8 @@ export default function Contact() {
           Get in Touch
         </h1>
         <p className="mb-10 text-cyan-300 max-w-xl">
-          Have a project in mind or just want to say hi? Fill out the form below or email me directly at{" "}
+          Have a project in mind or just want to say hi? Fill out the form below
+          or email me directly at{" "}
           <a
             href="mailto:uzairrehman143@gmail.com"
             className="underline text-cyan-400 hover:text-cyan-200"
@@ -121,7 +143,7 @@ export default function Contact() {
             <p
               aria-live="polite"
               className={`text-center font-semibold ${
-                status.includes("success") ? "text-green-400" : "text-red-400"
+                status.includes("✅") ? "text-green-400" : "text-red-400"
               }`}
             >
               {status}
